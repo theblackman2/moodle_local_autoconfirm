@@ -35,6 +35,7 @@ No configuration needed! The plugin works automatically after installation. Once
 
 - Monitor all new user registrations
 - Automatically confirm users who register via email self-registration
+- Redirect users to the login page immediately after registration
 - Leave other authentication methods (LDAP, OAuth, etc.) unchanged
 
 ## How It Works
@@ -44,7 +45,9 @@ The plugin listens for Moodle's user creation events. When a new user registers:
 1. The plugin detects the `user_created` event
 2. It checks if the user registered via email self-registration (`auth = 'email'`)
 3. If the user is unconfirmed, it automatically sets `confirmed = 1` in the database
-4. The user can immediately log in without clicking a confirmation email
+4. A session flag is set to indicate auto-confirmation
+5. The user is immediately redirected to the login page
+6. The user can log in right away without clicking a confirmation email
 
 ## Important Notes
 

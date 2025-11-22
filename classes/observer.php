@@ -12,7 +12,7 @@ class observer {
      * @return void
      */
     public static function user_created(\core\event\user_created $event) {
-        global $DB;
+        global $DB, $SESSION;
 
         // Get the user snapshot from the event
         $user = $event->get_record_snapshot('user', $event->objectid);
@@ -20,6 +20,9 @@ class observer {
         // Only target users created by the email self-registration plugin
         if (!empty($user) && isset($user->auth) && $user->auth === 'email' && empty($user->confirmed)) {
             $DB->set_field('user', 'confirmed', 1, ['id' => $user->id]);
+
+            // Set a session flag to indicate we just auto-confirmed this user
+            $SESSION->local_autoconfirm_just_confirmed = true;
         }
     }
 }
